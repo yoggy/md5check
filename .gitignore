@@ -1,0 +1,7 @@
+*.swp
+*.o
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+md5check
