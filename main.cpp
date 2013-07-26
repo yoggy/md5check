@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h> 
+#include <dirent.h>
 
 extern "C" {
 #include "md5.h"
@@ -103,9 +104,30 @@ void process_file(const char *path)
 	md5map[path] = md5str(md5);
 }
 
-void process_directory(const char *path)
+bool process_directory(const char *path)
 {
+	DIR *dir = opendir(path);
+	if (dir == NULL) return false;
+
+	struct dirent *d = NULL;
+	while(true) {
+		d = readdir(dir);
+		if (d == NULL) break;
+
+		std::string p(d->d_name);
+		if (p == "." || p == "..") continue;
+
+		if (d->d_type == DT_BLK)  continue;
+		if (d->d_type == DT_CHR)  continue;
+		if (d->d_type == DT_FIFO) continue;
+		if (d->d_type == DT_LNK)  continue;
+		if (d->d_type == DT_SOCK) continue;
+
+		// append normal file & directory name
+		queue.push_back(p);
+	}
 	
+	return true;
 }
 
 void process(const char *path)
