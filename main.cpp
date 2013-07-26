@@ -86,7 +86,7 @@ void process_file(const char *path)
 
 	FILE *fp = fopen(path, "rb");
 	if (fp == 0) {
-		std::cout << path << "," << "cannot_open" << std::endl;
+		std::cerr << path << "," << "cannot_open" << std::endl;
 		return;
 	}
 
@@ -124,7 +124,7 @@ bool process_directory(const char *path)
 		if (d->d_type == DT_SOCK) continue;
 
 		// append normal file & directory name
-		queue.push_back(p);
+		queue.push_back(std::string(path) + std::string("/") + p);
 	}
 	
 	return true;
@@ -163,7 +163,6 @@ int main(int argc, char *argv[])
 		queue.push_back(argv[i]);
 	}
 
-	check_queue();
 	process_queue();
 
 	print_md5map();
