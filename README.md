@@ -19,4 +19,8 @@ now under construction...
            .
            .
            .
+
+        N : create new file
+        M : modified file
+        D : deleted file
 </pre>
