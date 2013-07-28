@@ -1,6 +1,7 @@
 *.swp
 *.o
 *.db
+a
 CMakeCache.txt
 CMakeFiles/
 Makefile
