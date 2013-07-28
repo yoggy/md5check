@@ -1,7 +1,22 @@
 md5check
 ======================
-now under construction...
+simple file integrity check tool.
 
+install
+======================
+<pre>
+  $ sudo apt-get install cmake
+
+  $ git clone https://github.com/yoggy/md5check.git
+    (or wget https://github.com/yoggy/md5check/archive/master.zip)
+
+  $ cd md5check
+  $ cmake .
+  $ make
+</pre>
+
+usage
+======================
 <pre>
   usage:
       $ md5create db_file [file1] [file2] ... [dir1] [dir2] ...
