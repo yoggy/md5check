@@ -16,7 +16,6 @@ int main(int argc, char *argv[])
 
 	process(paths, md5map);
 
-	print_md5map(md5map);
 	save_md5map(db_file, md5map);
 	
 	return 0;

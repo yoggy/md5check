@@ -196,6 +196,13 @@ bool load_md5map(const std::string &filename, std::map<std::string, std::string>
 		return false;
 	}
 
+	std::ifstream ifs;
+	ifs.open(filename.c_str(), std::ios::in);
+	if (!ifs) {
+		return false;
+	}
+
+	
 
 	return false;
 }
