@@ -133,8 +133,6 @@ void process(const std::vector<std::string> &paths, std::map<std::string, std::s
 {
 	if (paths.size() == 0) return;
 
-	print_paths(paths);
-
 	// copy vector -> deque
 	std::deque<std::string> queue;
 	std::vector<std::string>::const_iterator i;
@@ -174,6 +172,7 @@ bool save_md5map(const std::string &filename, const std::map<std::string, std::s
 	std::ofstream ofs;
 	ofs.open(filename.c_str(), std::ios::out);
 	if (!ofs) {
+		std::cerr << "cannot open file...filename=" << filename.c_str() << std::endl;
 		return false;
 	}
 
@@ -189,10 +188,22 @@ bool save_md5map(const std::string &filename, const std::map<std::string, std::s
 	return true;
 }
 
+std::string chomp(const std::string &str)
+{
+	std::stringstream buf;
+	for (unsigned int i = 0; i < str.size(); ++i) {
+		if (str[i] == 0x0a || str[i] == 0x0d) continue;
+		buf << str[i];
+	}
+	return buf.str();
+}
+
 bool load_md5map(const std::string &filename, std::map<std::string, std::string> &md5map)
 {
+	md5map.clear();
+
 	if (is_file(filename) == false) {
-		std::cerr << "cannot file db_file...filename=" << filename.c_str() << std::endl;
+		std::cerr << "cannot open file...filename=" << filename.c_str() << std::endl;
 		return false;
 	}
 
@@ -202,7 +213,12 @@ bool load_md5map(const std::string &filename, std::map<std::string, std::string>
 		return false;
 	}
 
-	
+	while(!ifs.eof()) {
+		std::string l;
+		std::getline(ifs, l);
+		l = chomp(l);
+		std::cout << l << std::endl;
+	}
 
-	return false;
+	return true;
 }
