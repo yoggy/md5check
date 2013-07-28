@@ -14,4 +14,6 @@ extern void print_md5map(const std::map<std::string, std::string> &md5map);
 extern bool save_md5map(const std::string &filename, const std::map<std::string, std::string> &md5map);
 extern bool load_md5map(const std::string &filename, std::map<std::string, std::string> &md5map);
 
+extern bool compare(const std::map<std::string, std::string> &old_md5map, const std::map<std::string, std::string> &new_md5map);
+
 #endif // #define ____FILE__H____

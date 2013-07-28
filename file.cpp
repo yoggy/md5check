@@ -235,3 +235,57 @@ bool load_md5map(const std::string &filename, std::map<std::string, std::string>
 
 	return true;
 }
+
+void check_new(const std::map<std::string, std::string> &old_md5map, const std::map<std::string, std::string> &new_md5map)
+{
+	std::map<std::string, std::string>::const_iterator i;
+	for (i = new_md5map.begin(); i != new_md5map.end(); ++i) {
+		std::string new_path = i->first;
+		std::string new_md5  = i->second;
+
+		if (old_md5map.find(new_path) == old_md5map.end()) {
+			std::cout << "N," << new_path << std::endl;
+		}
+	}
+}
+
+void check_del(const std::map<std::string, std::string> &old_md5map, const std::map<std::string, std::string> &new_md5map)
+{
+	std::map<std::string, std::string>::const_iterator i;
+	for (i = old_md5map.begin(); i != old_md5map.end(); ++i) {
+		std::string old_path = i->first;
+		std::string old_md5  = i->second;
+
+		if (new_md5map.find(old_path) == new_md5map.end()) {
+			std::cout << "D," << old_path << std::endl;
+		}
+	}
+}
+
+void check_modify(const std::map<std::string, std::string> &old_md5map, const std::map<std::string, std::string> &new_md5map)
+{
+	std::map<std::string, std::string>::const_iterator i;
+	std::map<std::string, std::string>::const_iterator f;
+	for (i = old_md5map.begin(); i != old_md5map.end(); ++i) {
+		std::string old_path = i->first;
+		std::string old_md5  = i->second;
+
+		f = new_md5map.find(old_path);
+		if (f != new_md5map.end()) {
+			std::string new_path = f->first;
+			std::string new_md5  = f->second;
+			
+			if (old_md5 != new_md5) {
+				std::cout << "M," << old_path << std::endl;
+			}
+		}
+	}
+}
+
+void compare(const std::map<std::string, std::string> &old_md5map, const std::map<std::string, std::string> &new_md5map)
+{
+	check_new(old_md5map, new_md5map);
+	check_del(old_md5map, new_md5map);
+	check_modify(old_md5map, new_md5map);
+}
+

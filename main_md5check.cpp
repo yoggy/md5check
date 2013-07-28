@@ -19,15 +19,12 @@ int main(int argc, char *argv[])
 	for (int i = 2; i < argc; ++i) {
 		paths.push_back(argv[i]);
 	}
-	if (exists(paths) == false) {
-		return 1;
-	}
 
 	// calc md5hash
 	process(paths, new_md5map);
-	print_md5map(new_md5map);
 
-	//compare
+	// compare
+	compare(old_md5map, new_md5map);
 	
 	return 0;
 }
