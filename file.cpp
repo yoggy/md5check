@@ -213,11 +213,24 @@ bool load_md5map(const std::string &filename, std::map<std::string, std::string>
 		return false;
 	}
 
+	int line_num = 1;
 	while(!ifs.eof()) {
 		std::string l;
 		std::getline(ifs, l);
 		l = chomp(l);
-		std::cout << l << std::endl;
+
+		if (l.size() == 0) break;
+		if (l.size() < 34) {
+			std::cout << "load_md5map() : detect broken data...line=" << line_num << std::endl;
+			return false;
+		}
+
+		std::string md5  = l.substr(0, 32);
+		std::string path = l.substr(33, l.size()-33);
+
+		md5map[path] = md5;
+
+		line_num ++;
 	}
 
 	return true;
