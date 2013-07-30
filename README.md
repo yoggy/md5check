@@ -39,3 +39,18 @@ usage
         M : modified file
         D : deleted file
 </pre>
+
+<pre>
+  usage:
+      $ md5watch [file1] [file2] ... [dir1] [dir2] ...
+  
+  md5watch is realtime new/modify/delete watching tool.
+
+      $ md5watch /var /tmp /usr/local
+      N,/var/.a
+      M./var/tmp/text.txt
+      D,/tmp/qwerty
+           .
+           .
+           .
+</pre>
