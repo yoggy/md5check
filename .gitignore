@@ -8,3 +8,4 @@ Makefile
 cmake_install.cmake
 md5check
 md5create
+md5watch

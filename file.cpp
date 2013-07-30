@@ -117,6 +117,9 @@ bool directory_traversal(const std::string &path, std::deque<std::string> &queue
 		// append normal file & directory name
 		queue.push_back(path + std::string("/") + p);
 	}
+
+	closedir(dir);
+	dir = NULL;
 	
 	return true;
 }
