@@ -17,6 +17,8 @@ extern "C" {
 #include <sstream>
 #include <fstream>
 
+#include "log.h"
+
 bool is_file(const std::string &path)
 {
 	struct stat st;
@@ -50,7 +52,7 @@ bool exists(const std::vector<std::string> &paths)
 	std::vector<std::string>::const_iterator i;
 	for (i = paths.begin(); i != paths.end(); ++i) {
 		if (exists(i->c_str()) == false) {
-			std::cerr << "path not found...path=" << i->c_str() << std::endl;
+			log_e("path not found...path=%s", i->c_str());
 			return false;
 		}
 	}
@@ -77,7 +79,7 @@ std::string get_file_hash(const std::string &path)
 
 	FILE *fp = fopen(path.c_str(), "rb");
 	if (fp == 0) {
-		std::cerr << path << "," << "cannot_open" << std::endl;
+		log_e("cannot open...file=%s", path.c_str());
 		return std::string();
 	}
 
@@ -175,7 +177,7 @@ bool save_md5map(const std::string &filename, const std::map<std::string, std::s
 	std::ofstream ofs;
 	ofs.open(filename.c_str(), std::ios::out);
 	if (!ofs) {
-		std::cerr << "cannot open file...filename=" << filename.c_str() << std::endl;
+		log_e("cannot open file...filename=%s", filename.c_str());
 		return false;
 	}
 
@@ -206,7 +208,7 @@ bool load_md5map(const std::string &filename, std::map<std::string, std::string>
 	md5map.clear();
 
 	if (is_file(filename) == false) {
-		std::cerr << "cannot open file...filename=" << filename.c_str() << std::endl;
+		log_e("cannot open file...filename=%s", filename.c_str());
 		return false;
 	}
 
@@ -224,7 +226,7 @@ bool load_md5map(const std::string &filename, std::map<std::string, std::string>
 
 		if (l.size() == 0) break;
 		if (l.size() < 34) {
-			std::cout << "load_md5map() : detect broken data...line=" << line_num << std::endl;
+			log_e("load_md5map() : detect broken data...line=%d", line_num);
 			return false;
 		}
 
@@ -247,7 +249,7 @@ void check_new(const std::map<std::string, std::string> &old_md5map, const std::
 		std::string new_md5  = i->second;
 
 		if (old_md5map.find(new_path) == old_md5map.end()) {
-			std::cout << "N," << new_path << std::endl;
+			log_i("N,%s", new_path.c_str());
 		}
 	}
 }
@@ -260,7 +262,7 @@ void check_del(const std::map<std::string, std::string> &old_md5map, const std::
 		std::string old_md5  = i->second;
 
 		if (new_md5map.find(old_path) == new_md5map.end()) {
-			std::cout << "D," << old_path << std::endl;
+			log_i("D,%s", old_path.c_str());
 		}
 	}
 }
@@ -279,7 +281,7 @@ void check_modify(const std::map<std::string, std::string> &old_md5map, const st
 			std::string new_md5  = f->second;
 			
 			if (old_md5 != new_md5) {
-				std::cout << "M," << old_path << std::endl;
+				log_i("M,%s", old_path.c_str());
 			}
 		}
 	}
