@@ -18,6 +18,8 @@ install
 usage
 ======================
 <pre>
+  md5create & md5check is simple file integrity check tool.
+
   usage:
       $ md5create db_file [file1] [file2] ... [dir1] [dir2] ...
       $ md5check  db_file [file1] [file2] ... [dir1] [dir2] ...
@@ -41,11 +43,12 @@ usage
 </pre>
 
 <pre>
-  usage:
-      $ md5watch [file1] [file2] ... [dir1] [dir2] ...
-  
   md5watch is realtime new/modify/delete watching tool.
 
+  usage:
+      $ md5watch [file1] [file2] ... [dir1] [dir2] ...
+
+  example:
       $ md5watch /var /tmp /usr/local
       N,/var/.a
       M./var/tmp/text.txt
