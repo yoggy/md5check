@@ -11,7 +11,7 @@ void usage_md5watch()
 		<< "md5watch is realtime new/modify/delete watching tool." << std::endl
 		<< std::endl
 		<< "usage:" << std::endl
-		<< "    $ md5watch [file1] [file2] ... [dir1] [dir2] ..." << std::endl
+		<< "    $ md5watch [-i interval] [-n nice_val] [file1] [file2] ... [dir1] [dir2] ..." << std::endl
 		<< std::endl
 		<< "example:" << std::endl
 		<< "      $ md5watch /var /tmp /usr/local" << std::endl
@@ -34,16 +34,36 @@ void usage_md5watch()
 
 int main(int argc, char *argv[])
 {
+	int interval = 10;
+	int nice_val = 19;
+
 	if (argc < 2) usage_md5watch();
 
-	nice(10);
+	while(true) {
+		int c = getopt(argc, argv, "hi:n:");
+		if (c == -1) break;
 
-	std::string db_file = argv[1];
-	std::map<std::string, std::string> old_md5map, new_md5map;
+		switch(c) {
+			case 'i':
+				interval = atoi(optarg);
+				break;
+			case 'n':
+				nice_val = atoi(optarg);
+				break;
+			case 'h':
+				usage_md5watch();
+				break;
+			default:
+				usage_md5watch();
+		}
+	}
+	if (optind + 1 > argc) {
+		usage_md5watch();
+	}
 
 	// target path
 	std::vector<std::string> paths;
-	for (int i = 1; i < argc; ++i) {
+	for (int i = optind; i < argc; ++i) {
 		paths.push_back(argv[i]);
 	}
 	if (exists(paths) == false) {
@@ -51,6 +71,10 @@ int main(int argc, char *argv[])
 	}
 
 	log_d("start watching...");
+
+	nice(nice_val);
+
+	std::map<std::string, std::string> old_md5map, new_md5map;
 
 	// calc first md5hash
 	process(paths, old_md5map);
@@ -65,7 +89,7 @@ int main(int argc, char *argv[])
 		old_md5map.clear();
 		old_md5map = new_md5map;
 
-		sleep(10);
+		sleep(interval);
 	}
 
 	return 0;
