@@ -46,9 +46,11 @@ int main(int argc, char *argv[])
 		switch(c) {
 			case 'i':
 				interval = atoi(optarg);
+				if (interval < 0) interval = 10;
 				break;
 			case 'n':
 				nice_val = atoi(optarg);
+				if (nice_val < 0 || 20 < nice_val) nice_val = 19;
 				break;
 			case 'h':
 				usage_md5watch();
