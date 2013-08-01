@@ -34,9 +34,8 @@ void log_message_format_(const char *file, int line, const char *func, int level
 	struct tm t;
 	lt = time(&lt);
 	localtime_r(&lt, &t);
-	snprintf(time_str, 64, "%04d/%02d/%02d %02d:%02d:%02d", 
-		t.tm_year + 1900, t.tm_mon + 1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec);
-			
+	strftime(time_str, 64, "%Y-%m-%dT%H:%M:%S%z", &t);
+
 	const char *level_str = NULL;
 	switch(level) {
 		case LOGGING_LEVEL_ERROR:
