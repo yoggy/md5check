@@ -27,8 +27,8 @@ usage
         $ md5watch /var /tmp /usr/local
         2013-07-30T19:50:04+09:00 [D] start watching...
         2013-07-30T19:50:26+09:00 [D] watching...
-        2013-07-30T19:50:57+09:00 [I] N,/var/.a
-        2013-07-30T19:51:12+09:00 [I] M,/var/tmp/text.txt
+        2013-07-30T19:51:57+09:00 [I] N,/var/.a
+        2013-07-30T19:52:12+09:00 [I] M,/var/tmp/text.txt
         2013-07-30T19:53:35+09:00 [I] D,/tmp/qwerty
            .
            .
