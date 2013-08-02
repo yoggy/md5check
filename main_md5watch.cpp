@@ -12,6 +12,7 @@ void usage_md5watch()
 		<< std::endl
 		<< "usage:" << std::endl
 		<< "    $ md5watch [-i interval] [-n nice_val] [file1] [file2] ... [dir1] [dir2] ..." << std::endl
+		<< "    $ md5watch [-h]" << std::endl
 		<< std::endl
 		<< "example:" << std::endl
 		<< "      $ md5watch /var /tmp /usr/local" << std::endl
