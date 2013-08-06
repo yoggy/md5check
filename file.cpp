@@ -208,7 +208,6 @@ bool load_md5map(const std::string &filename, std::map<std::string, std::string>
 	md5map.clear();
 
 	if (is_file(filename) == false) {
-		log_e("cannot open file...filename=%s", filename.c_str());
 		return false;
 	}
 

@@ -1,5 +1,6 @@
 #include "file.h"
 #include "usage.h"
+#include "log.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,7 +22,10 @@ int main(int argc, char *argv[])
 	process(paths, md5map);
 
 	// save 
-	save_md5map(db_file, md5map);
+	if (save_md5map(db_file, md5map) == false) {
+		log_e("save_md5map() failed...filename=%s", db_file.c_str());
+		return 1;
+	}
 	
 	return 0;
 }

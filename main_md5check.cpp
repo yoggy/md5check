@@ -1,6 +1,6 @@
 #include "file.h"
 #include "usage.h"
-#include <iostream>
+#include "log.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 	std::map<std::string, std::string> old_md5map, new_md5map;
 
 	if (load_md5map(db_file, old_md5map) == false) {
-		std::cerr << "cannot open db_file..." << std::endl;
+		log_e("load_md5map() failed...filename=%s", db_file.c_str());
 		return 1;
 	}
 

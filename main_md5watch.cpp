@@ -1,9 +1,10 @@
-#include "file.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <iostream>
+#include <signal.h>
 
 #include "log.h"
+#include "file.h"
 
 void usage_md5watch()
 {
@@ -11,7 +12,7 @@ void usage_md5watch()
 		<< "md5watch is realtime new/modify/delete watching tool." << std::endl
 		<< std::endl
 		<< "usage:" << std::endl
-		<< "    $ md5watch [-i interval] [-n nice_val] [file1] [file2] ... [dir1] [dir2] ..." << std::endl
+		<< "    $ md5watch [-i interval] [-n nice_val] [-p persistence_db_file] [file1] [file2] ... [dir1] [dir2] ..." << std::endl
 		<< std::endl
 		<< "example:" << std::endl
 		<< "      $ md5watch /var /tmp /usr/local" << std::endl
@@ -32,6 +33,10 @@ void usage_md5watch()
 	exit(1);
 }
 
+
+std::string persistence_db_file = "";
+std::map<std::string, std::string> old_md5map;
+
 int main(int argc, char *argv[])
 {
 	int interval = 10;
@@ -40,7 +45,7 @@ int main(int argc, char *argv[])
 	if (argc < 2) usage_md5watch();
 
 	while(true) {
-		int c = getopt(argc, argv, "hi:n:");
+		int c = getopt(argc, argv, "hp:i:n:");
 		if (c == -1) break;
 
 		switch(c) {
@@ -51,6 +56,9 @@ int main(int argc, char *argv[])
 			case 'n':
 				nice_val = atoi(optarg);
 				if (nice_val < 0 || 20 < nice_val) nice_val = 19;
+				break;
+			case 'p':
+				persistence_db_file = std::string(optarg);
 				break;
 			case 'h':
 				usage_md5watch();
@@ -73,23 +81,36 @@ int main(int argc, char *argv[])
 	}
 
 	log_d("start watching...");
-
 	nice(nice_val);
 
-	std::map<std::string, std::string> old_md5map, new_md5map;
-
-	// calc first md5hash
-	process(paths, old_md5map);
+	// restore old_md5map
+	if (persistence_db_file != "") {
+		load_md5map(persistence_db_file, old_md5map);
+	}
+	if (persistence_db_file.size() == 0) {
+		// calc first md5hash
+		process(paths, old_md5map);
+	}
 
 	// watch loop...
+	std::map<std::string, std::string> new_md5map;
 	while(true) {
 		log_d("watching...");
 
 		new_md5map.clear();
 		process(paths, new_md5map);
+
 		compare(old_md5map, new_md5map);
+
 		old_md5map.clear();
 		old_md5map = new_md5map;
+
+		// save persistence_db_file
+		if (persistence_db_file != "") {
+			signal(SIGINT, SIG_IGN);
+			save_md5map(persistence_db_file, old_md5map);
+			signal(SIGINT, SIG_DFL);
+		}
 
 		sleep(interval);
 	}
