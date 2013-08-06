@@ -12,12 +12,8 @@ void usage_md5watch()
 		<< "md5watch is realtime new/modify/delete watching tool." << std::endl
 		<< std::endl
 		<< "usage:" << std::endl
-<<<<<<< HEAD
 		<< "    $ md5watch [-i interval] [-n nice_val] [-p persistence_db_file] [file1] [file2] ... [dir1] [dir2] ..." << std::endl
-=======
-		<< "    $ md5watch [-i interval] [-n nice_val] [file1] [file2] ... [dir1] [dir2] ..." << std::endl
 		<< "    $ md5watch [-h]" << std::endl
->>>>>>> 0726a89bfafca44ecf59cedaa7e041d24b7d6abe
 		<< std::endl
 		<< "example:" << std::endl
 		<< "      $ md5watch /var /tmp /usr/local" << std::endl
