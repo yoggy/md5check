@@ -25,11 +25,11 @@ usage
   
   example:
         $ md5watch -p persistence.db /var /tmp /usr/local
-        2013/07/30 19:50:04 [D] start watching...
-        2013/07/30 19:50:26 [D] watching...
-        2013/07/30 19:50:57 [I] N,/var/.a
-        2013/07/30 19:51:12 [I] M,/var/tmp/text.txt
-        2013/07/30 19:53:35 [I] D,/tmp/qwerty
+        2013-07-30T19:50:04+0900 [D] start watching...
+        2013-07-30T19:50:26+0900 [D] watching...
+        2013-07-30T19:50:57+0900 [I] N,/var/.a
+        2013-07-30T19:51:12+0900 [I] M,/var/tmp/text.txt
+        2013-07-30T19:53:35+0900 [I] D,/tmp/qwerty
            .
            .
            .

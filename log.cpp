@@ -5,6 +5,9 @@
 
 #include <time.h>
 
+#include <string.h>
+#include <string>
+
 int output_log_level_ = LOGGING_LEVEL_DEBUG;
 int output_string_length_ = 1024;
 
@@ -20,8 +23,16 @@ void set_output_string_length(const int level)
 
 void log_message_output_(const char *time_str, const char *level_str, const char *msg)
 {
-	fprintf(stdout, "%s %s %s\n", time_str, level_str, msg);
-	fflush(stderr);
+	int buf_size = strlen(time_str) + 1 + strlen(level_str) + 1 + strlen(msg) + 3;
+	char *buf = (char*)malloc(buf_size);
+	memset(buf, 0, buf_size);
+
+	snprintf(buf, buf_size, "%s %s %s\r\n", time_str, level_str, msg);
+
+	fprintf(stdout, "%s", buf);
+	fflush(stdout);
+
+	free(buf);
 }
 
 void log_message_format_(const char *file, int line, const char *func, int level, const char *fmt, ...)
