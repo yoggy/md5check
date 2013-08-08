@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	if (persistence_db_file != "") {
 		load_md5map(persistence_db_file, old_md5map);
 	}
-	if (persistence_db_file.size() == 0) {
+	if (old_md5map.size() == 0) {
 		// calc first md5hash
 		process(paths, old_md5map);
 	}
