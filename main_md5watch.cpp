@@ -85,10 +85,11 @@ int main(int argc, char *argv[])
 	nice(nice_val);
 
 	// restore old_md5map
+	bool rv = false;
 	if (persistence_db_file != "") {
-		load_md5map(persistence_db_file, old_md5map);
+		rv = load_md5map(persistence_db_file, old_md5map);
 	}
-	if (old_md5map.size() == 0) {
+	if (rv == false) {
 		// calc first md5hash
 		process(paths, old_md5map);
 	}
