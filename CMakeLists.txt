@@ -7,7 +7,7 @@ set(CMAKE_C_FLAGS "-O2 -g -Wall")
 
 include_directories(/usr/local/include)
 
-set(src_common md5.c file.cpp usage.cpp log.cpp) 
+set(src_common md5.c file.cpp usage.cpp log.cpp udp.cpp) 
 set(src_md5create main_md5create.cpp ${src_common})
 set(src_md5check main_md5check.cpp ${src_common})
 set(src_md5watch main_md5watch.cpp ${src_common})

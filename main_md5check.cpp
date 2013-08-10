@@ -1,6 +1,6 @@
 #include "file.h"
 #include "usage.h"
-#include "log.h"
+#include "log.hpp"
 
 int main(int argc, char *argv[])
 {

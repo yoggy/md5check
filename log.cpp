@@ -1,4 +1,4 @@
-#include "log.h"
+#include "log.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -8,8 +8,12 @@
 #include <string.h>
 #include <string>
 
+#include "udp.hpp"
+
 int output_log_level_ = LOGGING_LEVEL_DEBUG;
 int output_string_length_ = 1024;
+int udp_socket_ = -1;
+std::string udp_host_ = "";
 
 void set_output_log_level(const int level)
 {
@@ -21,6 +25,29 @@ void set_output_string_length(const int level)
 	output_string_length_= level;
 }
 
+void start_udp_log_output(const char *host, const int &port)
+{
+	stop_udp_log_output();
+
+	log_d("start_udp_log_output() host=%s, port=%d", host, port);
+	udp_socket_ = open_udp(host, port);
+}
+
+void stop_udp_log_output()
+{
+	if (udp_socket_ != -1) {
+		close(udp_socket_);
+		udp_socket_ = -1;
+	}
+}
+
+void udp_log_message_output_(const char *buf, const int &size)
+{
+	if (udp_socket_ == -1) return;
+	
+	::send(udp_socket_, buf, size, 0);
+}
+
 void log_message_output_(const char *time_str, const char *level_str, const char *msg)
 {
 	int buf_size = strlen(time_str) + 1 + strlen(level_str) + 1 + strlen(msg) + 3;
@@ -29,8 +56,12 @@ void log_message_output_(const char *time_str, const char *level_str, const char
 
 	snprintf(buf, buf_size, "%s %s %s\r\n", time_str, level_str, msg);
 
-	fprintf(stdout, "%s", buf);
-	fflush(stdout);
+	fprintf(stderr, "%s", buf);
+	fflush(stderr);
+
+	if (udp_socket_ != -1) {
+		udp_log_message_output_(buf, buf_size-1);
+	}
 
 	free(buf);
 }

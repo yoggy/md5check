@@ -3,7 +3,7 @@
 #include <iostream>
 #include <signal.h>
 
-#include "log.h"
+#include "log.hpp"
 #include "file.h"
 
 void usage_md5watch()
