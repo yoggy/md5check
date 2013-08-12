@@ -15,6 +15,8 @@ int output_string_length_ = 1024;
 int udp_socket_ = -1;
 std::string udp_host_ = "";
 
+bool is_setvbuf_ = false;
+
 void set_output_log_level(const int level)
 {
 	output_log_level_ = level;
@@ -55,6 +57,11 @@ void log_message_output_(const char *time_str, const char *level_str, const char
 	memset(buf, 0, buf_size);
 
 	snprintf(buf, buf_size, "%s %s %s\r\n", time_str, level_str, msg);
+
+	if (is_setvbuf_ == false) {
+		setvbuf(stderr, NULL, _IONBF, 0);
+		is_setvbuf_ = true;
+	}
 
 	fprintf(stderr, "%s", buf);
 	fflush(stderr);
